@@ -1,0 +1,53 @@
+---
+- hosts: 127.0.0.1
+  tasks:
+    - group_by: key=os_{{ ansible_distribution }}
+
+# Apply OSX roles
+- hosts: os_MacOSX
+  gather_facts: False
+  roles:
+  - role: homebrew
+    homebrew_installed_packages:
+      - pv
+      - tree
+      - wget
+
+  - role: nvm
+    nvm:
+      user: '{{ ansible_user_id }}'
+      version: v0.25.4
+      node_version: '0.12'
+
+  tasks:
+    - debug: var={{ ansible_distribution }}
+    - debug: var={{ age }}
+    - debug: var={{ name }}
+    # - name: install venus
+    #   npm:
+    #     name: venus
+    #     version: 2.3.9
+    #     global: yes
+
+# Apply CentOS roles
+- hosts: os_CentOS
+  gather_facts: False
+  roles:
+  - role: homebrew
+    homebrew_installed_packages:
+      - pv
+      - tree
+      - wget
+  - role: nvm
+    nvm:
+      user: '{{ ansible_user_id }}'
+      version: v0.25.4
+      node_version: '0.12'
+
+  tasks:
+    - debug: var={{ ansible_distribution }}
+    # - name: install venus
+    #   npm:
+    #     name: venus
+    #     version: 2.3.9
+    #     global: yes
