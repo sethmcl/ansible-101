@@ -20,6 +20,10 @@ function ensure {
     command -v $1 >/dev/null 2>&1 || { $2; }
 }
 
+function install_roles {
+    ansible-galaxy install -r requirements.txt --roles-path=./roles --ignore-errors
+}
+
 function run_playbook {
     ansible-playbook playbook.yml --ask-become-pass
 }
@@ -29,5 +33,6 @@ ensure "pip" install_pip
 ensure "virtualenv" install_virtualenv
 ensure "ansible-playbook" install_ansible
 
+install_roles
 run_playbook
 
